@@ -7,47 +7,22 @@ import pandas
 from scipy.optimize import minimize
 
 def fit_croston(
-                    data_name,
-                    model_time_series_required_length,
                     input_endog,
-                    input_dates,
                     input_length,
                     forecast_length,
-                    time_grain,
-                    input_endog_shifted,
-                    forecast_shifted_response,
-                    error_logger,
-                    training_length_in_years,
-                    time_series_class,
-                    holidays,
-                    training_exog_var,
-                    forecast_exog_var
                 ):
         """
 
-        :param data_name:
-        :param model_time_series_required_length:
         :param input_endog:
-        :param input_dates:
         :param input_length:
         :param forecast_length:
-        :param time_grain:
-        :param input_endog_shifted:
-        :param forecast_shifted_response:
-        :param error_logger:
-        :param training_length_in_years:
-        :param time_series_class:
-        :param holidays:
-        :param training_exog_var:
-        :param forecast_exog_var:
         :return:
         """
-        model = 'croston'
         epsilon = 1e-7
         input_series = numpy.asarray(input_endog.values)
         nzd = numpy.where(input_series != 0)[0]
         
-        if time_series_class == 'intermittent' and training_length_in_years > model_time_series_required_length.get(model, 0.5) and list(nzd) != [0]:
+        if list(nzd) != [0]:
                 
                 try:
                     w_opt = _croston_opt(
@@ -77,7 +52,7 @@ def fit_croston(
                     croston_model = None
                     croston_fittedvalues = None
                     croston_forecast = None
-                    error_logger.error('error in model fit for ' + model + ' ' + ' '.join(data_name) + ' with error ' + str(e))
+                    print(str(e))
         
         else:
             
