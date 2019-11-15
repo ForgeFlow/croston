@@ -7,7 +7,7 @@ requirements = ["numpy", "pandas", "scipy"]
 
 setup(
     name="croston",
-    version="0.0.1",
+    version="0.1.2",
     author="abc",
     author_email="abc@gmail.com",
     description="croston model for intermittent time series",
