@@ -1,10 +1,10 @@
 Metadata-Version: 2.1
 Name: croston
-Version: 0.1.2
+Version: 0.1.2.1
 Summary: croston model for intermittent time series
 Home-page: https://github.com/newelldatascience/croston
-Author: abc
-Author-email: abc@gmail.com
+Author: hm6
+Author-email: hmohammadi6545@gmail.com
 License: UNKNOWN
 Description: # croston
         A package to forecast intermittent time series using croston's method
