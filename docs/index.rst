@@ -10,7 +10,7 @@ Welcome to croston's documentation!
    :maxdepth: 2
    :caption: Contents:
    
-   croston
+   croston/croston
 
 
 
