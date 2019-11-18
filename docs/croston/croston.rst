@@ -1,6 +1,6 @@
 croston
 =============================
 
-.. automodule:: croston.croston
+.. automodule:: croston
 	:members:
 
