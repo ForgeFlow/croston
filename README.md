@@ -2,6 +2,7 @@
 A package to forecast intermittent time series using croston's method
 
 example:
+```
 
 import numpy as np
 import random
@@ -21,3 +22,4 @@ yhat = np.concatenate([fit_pred['croston_fittedvalues'], fit_pred['croston_forec
 
 plt.plot(ts)
 plt.plot(yhat)
+```
