@@ -2,31 +2,31 @@
 croston model for intermittent time series
 """
 
-import numpy
-import pandas
+import numpy as np
+import pandas as pd
 from scipy.optimize import minimize
 
 def fit_croston(
                     input_endog,
-                    input_length,
                     forecast_length,
                 ):
         """
 
-        :param input_endog:
-        :param input_length:
-        :param forecast_length:
-        :return:
+        :param input_endog: numpy array
+        :param forecast_length: horizon
+        :return: dict
         """
+        
+        input_series = np.asarray(input_endog)
         epsilon = 1e-7
-        input_series = numpy.asarray(input_endog.values)
-        nzd = numpy.where(input_series != 0)[0]
+        input_length = len(input_series)
+        nzd = np.where(input_series != 0)[0]
         
         if list(nzd) != [0]:
                 
                 try:
                     w_opt = _croston_opt(
-                                            input_series = numpy.asarray(input_endog.values),
+                                            input_series = input_series,
                                             input_series_length = input_length,
                                             epsilon = epsilon,                                            
                                             w = None,
@@ -35,7 +35,7 @@ def fit_croston(
                                         )
                     
                     croston_training_result = _croston(
-                                                            input_series = numpy.asarray(input_endog.values), 
+                                                            input_series = input_series, 
                                                             input_series_length = input_length,
                                                             w = w_opt, 
                                                             h = forecast_length,
@@ -61,7 +61,11 @@ def fit_croston(
             croston_forecast = None        
         
         
-        return croston_model, croston_fittedvalues, croston_forecast
+        return {
+                    'croston_model':            croston_model,
+                    'croston_fittedvalues':     croston_fittedvalues,
+                    'croston_forecast':         croston_forecast
+                }
 
 def _croston(
                  input_series, 
@@ -82,19 +86,19 @@ def _croston(
     :return:
     """
     # Croston decomposition
-    nzd = numpy.where(input_series != 0)[0] # find location of non-zero demand
+    nzd = np.where(input_series != 0)[0] # find location of non-zero demand
     
     k = len(nzd)
     z = input_series[nzd] # demand
     
-    x = numpy.concatenate([[nzd[0]], numpy.diff(nzd)]) # intervals
+    x = np.concatenate([[nzd[0]], np.diff(nzd)]) # intervals
 
     # initialize
     
-    init = [z[0], numpy.mean(x)]
+    init = [z[0], np.mean(x)]
     
-    zfit = numpy.array([None] * k)
-    xfit = numpy.array([None] * k)
+    zfit = np.array([None] * k)
+    xfit = np.array([None] * k)
 
     # assign initial values and prameters
     
@@ -134,16 +138,16 @@ def _croston(
     croston_model = {
                         'a_demand':             a_demand,
                         'a_interval':           a_interval,
-                        'demand_series':        pandas.Series(zfit),
-                        'interval_series':      pandas.Series(xfit),
-                        'demand_process':       pandas.Series(cc),
+                        'demand_series':        pd.Series(zfit),
+                        'interval_series':      pd.Series(xfit),
+                        'demand_process':       pd.Series(cc),
                         'correction_factor':    correction_factor
                     }
     
     # calculate in-sample demand rate
     
-    frc_in = numpy.zeros(input_series_length)
-    tv = numpy.concatenate([nzd, [input_series_length]]) # Time vector used to create frc_in forecasts
+    frc_in = np.zeros(input_series_length)
+    tv = np.concatenate([nzd, [input_series_length]]) # Time vector used to create frc_in forecasts
     
     for i in range(k):
         frc_in[tv[i]:min(tv[i+1], input_series_length)] = cc[i]
@@ -151,15 +155,15 @@ def _croston(
     # forecast out_of_sample demand rate
     
     if h > 0:
-        frc_out = numpy.array([cc[k-1]] * h)
+        frc_out = np.array([cc[k-1]] * h)
         
     else:
         frc_out = None
     
     return_dictionary = {
                             'model':                    croston_model,
-                            'in_sample_forecast':       pandas.Series(frc_in),
-                            'out_of_sample_forecast':   pandas.Series(frc_out)
+                            'in_sample_forecast':       frc_in,
+                            'out_of_sample_forecast':   frc_out
                         }
     
     return return_dictionary
@@ -182,7 +186,7 @@ def _croston_opt(
     :param croston_variant:
     :return:
     """
-    p0 = numpy.array([0.1] * nop)
+    p0 = np.array([0.1] * nop)
             
     wopt = minimize(
                         fun = _croston_cost, 
@@ -191,7 +195,7 @@ def _croston_opt(
                         args=(input_series, input_series_length, epsilon, croston_variant)
                     )
     
-    constrained_wopt = numpy.minimum([1], numpy.maximum([0], wopt.x))   
+    constrained_wopt = np.minimum([1], np.maximum([0], wopt.x))   
     
     return constrained_wopt
     
@@ -217,7 +221,7 @@ def _croston_cost(
     frc_in = _croston(input_series = input_series, input_series_length = input_series_length, w=p0, h=0, epsilon = epsilon, croston_variant = croston_variant)['in_sample_forecast']
         
     E = input_series - frc_in
-    E = E[E != numpy.array(None)]
-    E = numpy.mean(E ** 2)
+    E = E[E != np.array(None)]
+    E = np.mean(E ** 2)
 
     return E
