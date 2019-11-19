@@ -15,7 +15,6 @@ idxs = random.sample(range(50), 10)
 
 ts = np.insert(a, idxs, val)
 
-
 fit_pred = croston.fit_croston(ts, 10)
 
 yhat = np.concatenate([fit_pred['croston_fittedvalues'], fit_pred['croston_forecast']])
