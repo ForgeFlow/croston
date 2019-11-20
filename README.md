@@ -1,6 +1,8 @@
 # croston
 A package to forecast intermittent time series using croston's method
 
+[croston](https://newell-brands-croston.readthedocs-hosted.com/en/latest/)
+
 example:
 ```
 
