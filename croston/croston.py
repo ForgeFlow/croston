@@ -13,10 +13,10 @@ def fit_croston(
                 ):
         """
 
-        :param input_endog: numpy array
-        :param forecast_length: horizon
+        :param input_endog: numpy array of intermittent demand time series
+        :param forecast_length: forecast horizon
         :param croston_variant: croston model type
-        :return: dict
+        :return: dictionary of model parameters, in-sample forecast, and out-of-sample forecast
         """
         
         input_series = np.asarray(input_endog)
@@ -77,16 +77,7 @@ def _croston(
                  h,                  
                  epsilon
              ):
-    """
-
-    :param input_series:
-    :param input_series_length:
-    :param croston_variant:
-    :param w:
-    :param h:
-    :param epsilon:
-    :return:
-    """
+    
     # Croston decomposition
     nzd = np.where(input_series != 0)[0] # find location of non-zero demand
     
@@ -178,16 +169,7 @@ def _croston_opt(
                     w = None,
                     nop = 1
                 ):
-    """
-
-    :param input_series:
-    :param input_series_length:
-    :param croston_variant:
-    :param epsilon:
-    :param w:
-    :param nop:
-    :return:
-    """
+    
     p0 = np.array([0.1] * nop)
             
     wopt = minimize(
@@ -209,15 +191,7 @@ def _croston_cost(
                     croston_variant,
                     epsilon
                 ):
-    """
-
-    :param p0:
-    :param input_series:
-    :param input_series_length:
-    :param croston_variant:
-    :param epsilon:
-    :return:
-    """
+    
     # cost function for croston and variants
     
     frc_in = _croston(

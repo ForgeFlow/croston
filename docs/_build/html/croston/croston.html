@@ -35,6 +35,7 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="example" href="example.html" />
     <link rel="prev" title="Welcome to croston’s documentation!" href="../index.html" /> 
 </head>
 
@@ -82,6 +83,7 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">croston</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example.html">example</a></li>
 </ul>
 
             
@@ -151,20 +153,35 @@
 <p>croston model for intermittent time series</p>
 <dl class="function">
 <dt id="croston.croston.fit_croston">
-<code class="descclassname">croston.croston.</code><code class="descname">fit_croston</code><span class="sig-paren">(</span><em>input_endog</em>, <em>input_length</em>, <em>forecast_length</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/croston/croston.html#fit_croston"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#croston.croston.fit_croston" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">croston.croston.</code><code class="descname">fit_croston</code><span class="sig-paren">(</span><em>input_endog</em>, <em>forecast_length</em>, <em>croston_variant='original'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/croston/croston.html#fit_croston"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#croston.croston.fit_croston" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>input_endog</strong> – </p></li>
-<li><p><strong>input_length</strong> – </p></li>
-<li><p><strong>forecast_length</strong> – </p></li>
+<li><p><strong>input_endog</strong> – numpy array of intermittent demand time series</p></li>
+<li><p><strong>forecast_length</strong> – forecast horizon</p></li>
+<li><p><strong>croston_variant</strong> – croston model type</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
+<dd class="field-even"><p>dictionary of model parameters, in-sample forecast, and out-of-sample forecast</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="function">
+<dt id="croston.croston._croston">
+<code class="descclassname">croston.croston.</code><code class="descname">_croston</code><span class="sig-paren">(</span><em>input_series</em>, <em>input_series_length</em>, <em>croston_variant</em>, <em>w</em>, <em>h</em>, <em>epsilon</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/croston/croston.html#_croston"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#croston.croston._croston" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="croston.croston._croston_opt">
+<code class="descclassname">croston.croston.</code><code class="descname">_croston_opt</code><span class="sig-paren">(</span><em>input_series</em>, <em>input_series_length</em>, <em>croston_variant</em>, <em>epsilon</em>, <em>w=None</em>, <em>nop=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/croston/croston.html#_croston_opt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#croston.croston._croston_opt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="croston.croston._croston_cost">
+<code class="descclassname">croston.croston.</code><code class="descname">_croston_cost</code><span class="sig-paren">(</span><em>p0</em>, <em>input_series</em>, <em>input_series_length</em>, <em>croston_variant</em>, <em>epsilon</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/croston/croston.html#_croston_cost"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#croston.croston._croston_cost" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </div>
 
@@ -175,6 +192,8 @@
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="example.html" class="btn btn-neutral float-right" title="example" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../index.html" class="btn btn-neutral float-left" title="Welcome to croston’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

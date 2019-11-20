@@ -54,11 +54,4 @@ html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
 autodoc_mock_imports = ['numpy', 'pandas', 'scipy']
 master_doc = 'index'
-autodoc_default_options = {
-	'undoc-members':	True
-}
-
-#import mock 
-#MOCK_MODULES = ['numpy', 'scipy', 'pandas']
-#for mod_name in MOCK_MODULES:
-#	sys.modules[mod_name] = mock.Mock()
+autodoc_member_order = 'bysource'

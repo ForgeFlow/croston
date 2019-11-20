@@ -11,6 +11,7 @@ Welcome to croston's documentation!
    :caption: Contents:
    
    croston/croston
+   croston/example
 
 
 
