@@ -9,11 +9,13 @@ from scipy.optimize import minimize
 def fit_croston(
                     input_endog,
                     forecast_length,
+                    croston_variant = 'original'
                 ):
         """
 
         :param input_endog: numpy array
         :param forecast_length: horizon
+        :param croston_variant: croston model type
         :return: dict
         """
         
@@ -28,19 +30,19 @@ def fit_croston(
                     w_opt = _croston_opt(
                                             input_series = input_series,
                                             input_series_length = input_length,
+                                            croston_variant = croston_variant,
                                             epsilon = epsilon,                                            
                                             w = None,
-                                            nop = 1,
-                                            croston_variant = 'original'
+                                            nop = 1
                                         )
                     
                     croston_training_result = _croston(
                                                             input_series = input_series, 
                                                             input_series_length = input_length,
+                                                            croston_variant = croston_variant,
                                                             w = w_opt, 
                                                             h = forecast_length,
                                                             epsilon = epsilon,
-                                                            croston_variant = 'original'
                                                       )
                     croston_model = croston_training_result['model']
                     croston_fittedvalues = croston_training_result['in_sample_forecast']
@@ -70,19 +72,19 @@ def fit_croston(
 def _croston(
                  input_series, 
                  input_series_length,
+                 croston_variant,
                  w, 
                  h,                  
-                 epsilon,
-                 croston_variant = 'original'
+                 epsilon
              ):
     """
 
     :param input_series:
     :param input_series_length:
+    :param croston_variant:
     :param w:
     :param h:
     :param epsilon:
-    :param croston_variant:
     :return:
     """
     # Croston decomposition
@@ -171,19 +173,19 @@ def _croston(
 def _croston_opt(
                     input_series, 
                     input_series_length, 
+                    croston_variant,
                     epsilon,
                     w = None,
-                    nop = 1,
-                    croston_variant = 'original'
+                    nop = 1
                 ):
     """
 
     :param input_series:
     :param input_series_length:
+    :param croston_variant:
     :param epsilon:
     :param w:
     :param nop:
-    :param croston_variant:
     :return:
     """
     p0 = np.array([0.1] * nop)
@@ -192,7 +194,7 @@ def _croston_opt(
                         fun = _croston_cost, 
                         x0 = p0, 
                         method='Nelder-Mead',
-                        args=(input_series, input_series_length, epsilon, croston_variant)
+                        args=(input_series, input_series_length, croston_variant, epsilon)
                     )
     
     constrained_wopt = np.minimum([1], np.maximum([0], wopt.x))   
@@ -204,21 +206,28 @@ def _croston_cost(
                     p0,
                     input_series,
                     input_series_length,
-                    epsilon,
-                    croston_variant
+                    croston_variant,
+                    epsilon
                 ):
     """
 
     :param p0:
     :param input_series:
     :param input_series_length:
-    :param epsilon:
     :param croston_variant:
+    :param epsilon:
     :return:
     """
     # cost function for croston and variants
     
-    frc_in = _croston(input_series = input_series, input_series_length = input_series_length, w=p0, h=0, epsilon = epsilon, croston_variant = croston_variant)['in_sample_forecast']
+    frc_in = _croston(
+                            input_series = input_series,
+                            input_series_length = input_series_length,
+                            croston_variant = croston_variant,
+                            w=p0,
+                            h=0,
+                            epsilon = epsilon
+                        )['in_sample_forecast']
         
     E = input_series - frc_in
     E = E[E != np.array(None)]
